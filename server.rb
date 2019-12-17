@@ -4,13 +4,8 @@ require "sinatra"
 set :bind, '0.0.0.0'  # bind to all interfaces
 set :public_folder, File.join(File.dirname(__FILE__), "public")
 
-get "/hello" do
-  "<p>Hello, world! The current time is #{Time.now}</p>"
-end
-
-get "/tasks" do
-  @tasks = ["pay bills", "buy milk", "learn Ruby"]
-  erb :index
+get '/' do
+  redirect '/tasks'
 end
 
 get "/tasks/:task_name" do
@@ -31,4 +26,9 @@ post "/tasks" do
   # Send the user back to the home page which shows
   # the list of tasks
   redirect "/tasks"
+end
+
+get "/tasks" do
+  @tasks = File.readlines("tasks.txt")
+  erb :index
 end
